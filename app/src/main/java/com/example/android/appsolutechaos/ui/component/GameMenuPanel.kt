@@ -18,10 +18,10 @@ fun GameMenuPanel(
     onStartLevel1: () -> Unit,
     onStartLevel2: () -> Unit,
     onExitGame: () -> Unit,
-    modifier: Modifier = Modifier
+    onStartTestLevel: (() -> Unit)? = null
 ) {
     Card(
-        modifier = modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         colors = CardDefaults.cardColors(
             containerColor = Color.Black.copy(alpha = 0.8f)
         )
@@ -94,6 +94,28 @@ fun GameMenuPanel(
                     Text(
                         text = "Audio Keypad Challenge",
                         fontSize = 12.sp
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Test level button (for debugging)
+            onStartTestLevel?.let { testLevelCallback ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = testLevelCallback,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Gray
+                    )
+                ) {
+                    Text(
+                        text = "TEST LEVEL",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }

@@ -41,7 +41,17 @@ fun AppsoluteChaosApp(
                 GameMenuScreen(
                     onStartLevel1 = { gameState.startLevel1() },
                     onStartLevel2 = { gameState.startLevel2() },
+                    onStartTestLevel = { gameState.startTestLevel() },
                     onExitGame = { 
+                        showGame = false
+                        gameState.resetGame()
+                    }
+                )
+            }
+            
+            GameLevel.TEST_LEVEL -> {
+                TestLevel(
+                    onBackToMenu = { 
                         showGame = false
                         gameState.resetGame()
                     }

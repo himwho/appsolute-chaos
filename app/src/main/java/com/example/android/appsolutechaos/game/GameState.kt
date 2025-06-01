@@ -11,6 +11,7 @@ enum class GameLevel {
     MENU,
     LEVEL_1,
     LEVEL_2,
+    TEST_LEVEL,
     GAME_OVER
 }
 
@@ -41,6 +42,10 @@ class GameState {
         _currentLevel.value = GameLevel.LEVEL_2
         _score.value = _score.value.copy(level = 2, loops = 0, totalTime = 0f, incorrectPresses = 0)
         isGamePaused = false
+    }
+    
+    fun startTestLevel() {
+        _currentLevel.value = GameLevel.TEST_LEVEL
     }
     
     fun completeLevel1(loops: Int, totalTime: Float, incorrectPresses: Int) {
