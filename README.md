@@ -1,2 +1,2 @@
-# appsolute-chaos
+# Appsolute Chaos
 It's legit

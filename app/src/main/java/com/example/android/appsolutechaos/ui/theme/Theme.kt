@@ -1,6 +1,5 @@
-package com.example.appsolutechaos.ui.theme
+package com.example.android.appsolutechaos.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -55,4 +54,4 @@ fun AppsoluteChaosTheme(
         typography = Typography,
         content = content
     )
-}
+} 
