@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.appsolutechaos"
+    namespace = "com.example.android.appsolutechaos"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.appsolutechaos"
+        applicationId = "com.example.android.appsolutechaos"
         minSdk = 34
         targetSdk = 35
         versionCode = 1
@@ -50,8 +50,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material3.adaptive)
     implementation(libs.androidx.xr.compose)
-    implementation(libs.androidx.xr.scenecore)
-    implementation(libs.jetbrains.kotlinx.coroutines.guava)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

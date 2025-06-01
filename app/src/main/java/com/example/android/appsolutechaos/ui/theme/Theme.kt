@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.appsolutechaos.ui.theme
+package com.example.android.appsolutechaos.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -49,7 +49,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun AppsolutheChaosTheme(
+fun AppsoluteChaosTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -70,4 +70,4 @@ fun AppsolutheChaosTheme(
         typography = Typography,
         content = content
     )
-}
+} 
