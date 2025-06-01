@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Appsolute Chaos</string>
-    <string name="hello_android_xr">Hello Android XR.</string>
-    <string name="switch_to_home_space_mode">Switch to Home Space Mode</string>
-    <string name="switch_to_full_space_mode">Switch to Full Space Mode</string>
+    <string name="primary_title">Chaos Game Instructions</string>
+    <string name="primary_description">Welcome to Appsolute Chaos! This is a challenging Android XR game where you must read instructions and click the correct button while the window moves around you every 3 seconds. Stay focused, read carefully, and click the right button to advance to the next level. Wrong clicks will reset you back to level 1!</string>
+    <string name="secondary_title">Game Rules</string>
+    <string name="secondary_description">The window will randomly move around you every 3 seconds. Each time it moves, the buttons change their text, color, size, and position. Find and click the button specified in the instructions to advance. Good luck!</string>
 </resources>
