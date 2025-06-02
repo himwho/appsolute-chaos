@@ -44,7 +44,7 @@ enum class ButtonShape {
 }
 
 @Composable
-fun Level1Game(
+fun Level1GameContent(
     onLevelComplete: (loops: Int, totalTime: Float, incorrectPresses: Int) -> Unit,
     onBackToMenu: () -> Unit
 ) {
@@ -83,182 +83,190 @@ fun Level1Game(
         }
     }
 
-    Subspace {
-        // True 3D floating buttons - invisible panels containing only button content
-        buttons.forEach { button ->
-            SpatialPanel(
-                modifier = SubspaceModifier
-                    .width(80.dp)
-                    .height(80.dp)
-                    .offset(
-                        x = button.x.dp,
-                        y = button.y.dp,
-                        z = button.z.dp
-                    )
-            ) {
-                // No Card wrapper - just the button as a pure 3D object
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(
-                            when (button.shape) {
-                                ButtonShape.CIRCLE -> CircleShape
-                                ButtonShape.SQUARE -> RoundedCornerShape(4.dp)
-                                ButtonShape.ROUNDED_RECTANGLE -> RoundedCornerShape(16.dp)
-                            }
-                        )
-                        .background(button.color)
-                        .clickable {
-                            if (button.isCorrect) {
-                                onLevelComplete(loops, gameTime, incorrectPresses)
-                            } else {
-                                incorrectPresses++
-                                repositionTimer += 0.25f
-                            }
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = if (button.isCorrect) "✓" else "✗",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-        }
-
-        // Floating hint text - orbiting around user
-        if (showHint) {
-            val hintRadius = 600f
-            val hintX = (hintRadius * sin(Math.toRadians(hintRotation.toDouble()))).toFloat()
-            val hintZ = (-800 + hintRadius * cos(Math.toRadians(hintRotation.toDouble()))).toFloat()
-            
-            SpatialPanel(
-                modifier = SubspaceModifier
-                    .width(200.dp)
-                    .height(120.dp)
-                    .offset(x = hintX.dp, y = 150.dp, z = hintZ.dp)
-            ) {
-                // Semi-transparent floating hint
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color.Black.copy(alpha = 0.7f))
-                        .padding(12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Find ✓",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Yellow
-                        )
-                        Text(
-                            text = "Loop ${loops + 1}",
-                            fontSize = 12.sp,
-                            color = Color.White
-                        )
-                        Text(
-                            text = "${repositionTimer.toInt()}s",
-                            fontSize = 14.sp,
-                            color = Color.Cyan
-                        )
-                    }
-                }
-            }
-        }
-
-        // Game status display - minimal floating HUD
+    // True 3D floating buttons - content within existing Subspace
+    buttons.forEach { button ->
         SpatialPanel(
             modifier = SubspaceModifier
-                .width(300.dp)
-                .height(100.dp)
-                .offset(x = 0.dp, y = 350.dp, z = -500.dp)
+                .width(80.dp)
+                .height(80.dp)
+                .offset(
+                    x = button.x.dp,
+                    y = button.y.dp,
+                    z = button.z.dp
+                )
         ) {
+            // No Card wrapper - just the button as a pure 3D object
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(
+                        when (button.shape) {
+                            ButtonShape.CIRCLE -> CircleShape
+                            ButtonShape.SQUARE -> RoundedCornerShape(4.dp)
+                            ButtonShape.ROUNDED_RECTANGLE -> RoundedCornerShape(16.dp)
+                        }
+                    )
+                    .background(button.color)
+                    .clickable {
+                        if (button.isCorrect) {
+                            onLevelComplete(loops, gameTime, incorrectPresses)
+                        } else {
+                            incorrectPresses++
+                            repositionTimer += 0.25f
+                        }
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = if (button.isCorrect) "✓" else "✗",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+
+    // Floating hint text - orbiting around user
+    if (showHint) {
+        val hintRadius = 600f
+        val hintX = (hintRadius * sin(Math.toRadians(hintRotation.toDouble()))).toFloat()
+        val hintZ = (-800 + hintRadius * cos(Math.toRadians(hintRotation.toDouble()))).toFloat()
+        
+        SpatialPanel(
+            modifier = SubspaceModifier
+                .width(200.dp)
+                .height(120.dp)
+                .offset(x = hintX.dp, y = 150.dp, z = hintZ.dp)
+        ) {
+            // Semi-transparent floating hint
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color.Black.copy(alpha = 0.8f))
-                    .padding(16.dp),
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color.Black.copy(alpha = 0.7f))
+                    .padding(12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "TIME",
-                            fontSize = 10.sp,
-                            color = Color.Gray
-                        )
-                        Text(
-                            text = "${gameTime.toInt()}s",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    }
-                    
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "LOOPS",
-                            fontSize = 10.sp,
-                            color = Color.Gray
-                        )
-                        Text(
-                            text = "$loops",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Cyan
-                        )
-                    }
-                    
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "ERRORS",
-                            fontSize = 10.sp,
-                            color = Color.Gray
-                        )
-                        Text(
-                            text = "$incorrectPresses",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Red
-                        )
-                    }
+                    Text(
+                        text = "Find ✓",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Yellow
+                    )
+                    Text(
+                        text = "Loop ${loops + 1}",
+                        fontSize = 12.sp,
+                        color = Color.White
+                    )
+                    Text(
+                        text = "${repositionTimer.toInt()}s",
+                        fontSize = 14.sp,
+                        color = Color.Cyan
+                    )
                 }
             }
         }
+    }
 
-        // Exit button - top corner
-        SpatialPanel(
-            modifier = SubspaceModifier
-                .width(100.dp)
-                .height(60.dp)
-                .offset(x = -400.dp, y = 300.dp, z = -600.dp)
+    // Game status display - minimal floating HUD
+    SpatialPanel(
+        modifier = SubspaceModifier
+            .width(300.dp)
+            .height(100.dp)
+            .offset(x = 0.dp, y = 350.dp, z = -500.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.Black.copy(alpha = 0.8f))
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Button(
-                onClick = onBackToMenu,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red.copy(alpha = 0.8f)
-                )
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "EXIT",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "TIME",
+                        fontSize = 10.sp,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = "${gameTime.toInt()}s",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
+                
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "LOOPS",
+                        fontSize = 10.sp,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = "$loops",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Cyan
+                    )
+                }
+                
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "ERRORS",
+                        fontSize = 10.sp,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = "$incorrectPresses",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Red
+                    )
+                }
             }
         }
+    }
+
+    // Exit button - top corner
+    SpatialPanel(
+        modifier = SubspaceModifier
+            .width(100.dp)
+            .height(60.dp)
+            .offset(x = -400.dp, y = 300.dp, z = -600.dp)
+    ) {
+        Button(
+            onClick = onBackToMenu,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Red.copy(alpha = 0.8f)
+            )
+        ) {
+            Text(
+                text = "EXIT",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+fun Level1Game(
+    onLevelComplete: (loops: Int, totalTime: Float, incorrectPresses: Int) -> Unit,
+    onBackToMenu: () -> Unit
+) {
+    Subspace {
+        Level1GameContent(onLevelComplete, onBackToMenu)
     }
 }
 
